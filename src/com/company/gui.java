@@ -31,64 +31,78 @@ public class gui {
     private JLabel library5Label;
     private JLabel ParadeLabel;
     private JPanel third;
+    private JButton confirmLocationButton;
+    private int x = 0, y = 0;
+    private Maps current, destination;
+
 
     public gui() {
 
 
         $$$setupUI$$$();
         button1.addActionListener(new ActionListener() {
+
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 String choice = "" + comboBox1.getSelectedItem();
-
+                String route = "";
                 maps.removeAll();
 
                 switch (choice) {
-
-                    case "Library 1":
-
+                    case "Library 1" -> {
+                        choice = "L1/Library1.txt";
+                        route = "L1/L1Route.txt";
                         maps.add(Library1);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
-                        break;
-
-                    case "Library 2":
+                    }
+                    case "Library 2" -> {
+                        choice = "L2/Library2.txt";
+                        route = "L2/L2Route.txt";
                         maps.add(Library2);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
-                        break;
-                    case "Library 3":
+                    }
+                    case "Library 3" -> {
+                        choice = "L3/Library3.txt";
+                        route = "L3/L3Route.txt";
                         maps.add(Library3);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
-                        break;
-                    case "Library 4":
+                    }
+                    case "Library 4" -> {
+                        choice = "L4/Library4.txt";
+                        route = "L4/L4Route.txt";
                         maps.add(Library4);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
-                        break;
-                    case "Library 5":
+                    }
+                    case "Library 5" -> {
+                        choice = "L5/Library5.txt";
+                        route = "L5/L5Route.txt";
                         maps.add(Library5);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
-                        break;
-                    case "The parade":
+                    }
+                    case "The Parade" -> {
+                        choice = "TP/TheParade.txt";
+                        route = "TP/TPRoute.txt";
                         maps.add(Theparade);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
-                        break;
-                    case "":
-                        System.out.println("no selection");
-                        break;
-
+                    }
+                    case "" -> System.out.println("no selection");
                 }
-
+                if (!choice.equals("")) {
+                    current = new Maps(choice, route, "");
+                }
 
             }
         });
@@ -98,19 +112,17 @@ public class gui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
 
-
-                System.out.println("" + x + " " + y);
             }
         });
         library2Label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
 
             }
         });
@@ -118,8 +130,8 @@ public class gui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
 
             }
         });
@@ -127,8 +139,8 @@ public class gui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
 
             }
         });
@@ -136,8 +148,8 @@ public class gui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
 
             }
         });
@@ -145,18 +157,59 @@ public class gui {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
 
             }
         });
-        button1.addActionListener(new ActionListener() {
+
+        confirmLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.print(x + " " + y + "  ");
+                x = (x - 1) / 10;
+                y = (y - 1) / 10;
+                System.out.println(x + " " + y);
+                if (!current.validate(x, y)) {
+                    System.out.println("Invalid (wall), please press new location in map " + x + " " + y);
+                } else {
+                    current.setXY(x, y);
+                }
+
+            }
+
+        });
+        confirmRoomButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choice = "" + comboBox2.getSelectedItem();
+                String sub = choice.substring(0, 2);
+                String route = "";
+                switch (sub) {
+                    case "L1" -> route = "L1/L1Route.txt";
+                    case "L2" -> route = "L2/L2Route.txt";
+                    case "L3" -> route = "L3/L3Route.txt";
+                    case "L4" -> route = "L4/L4Route.txt";
+                    case "L5" -> route = "L5/L5Route.txt";
+                    case "TP" -> route = "TP/TPRoute.txt";
+                }
+                if (sub.equals(current.start)) {
+                    //find route on map current else find route on both maps current and destination
+                    current.setDestination(choice);
+                } else {
+
+                }
+
+
+                switch (sub) {
+                    case
+                }
+                destination = new Maps("stairs", route, choice);
 
             }
         });
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
@@ -258,20 +311,20 @@ public class gui {
         ParadeLabel.setText("");
         panel6.add(ParadeLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         first = new JPanel();
-        first.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
+        first.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 5, new Insets(0, 0, 0, 0), -1, -1));
         pan1.add(first, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(10, 10), null, 0, true));
         final JLabel label1 = new JLabel();
         label1.setText("Label");
-        first.add(label1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        first.add(label1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 5, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        first.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        first.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(1, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
         label2.setText("Please choose starting map");
         first.add(label2, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         comboBox1 = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
         defaultComboBoxModel1.addElement("");
-        defaultComboBoxModel1.addElement("The parade");
+        defaultComboBoxModel1.addElement("The Parade");
         defaultComboBoxModel1.addElement("Library 1");
         defaultComboBoxModel1.addElement("Library 2");
         defaultComboBoxModel1.addElement("Library 3");
@@ -285,6 +338,9 @@ public class gui {
         button1 = new JButton();
         button1.setText("confim map");
         first.add(button1, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        confirmLocationButton = new JButton();
+        confirmLocationButton.setText("Confirm location");
+        first.add(confirmLocationButton, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         second = new JPanel();
         second.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         pan1.add(second, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
