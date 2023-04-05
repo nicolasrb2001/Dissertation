@@ -111,7 +111,7 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-                System.out.println(x / 10 + "," + y / 10);
+
 
             }
         });
@@ -164,19 +164,15 @@ public class gui {
         confirmLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.print(x + " " + y + "  ");
                 x = x / 10;
                 y = y / 10;
-                System.out.println(x + " " + y);
                 if (!current.validate(x, y)) {
                     System.out.println("Invalid (wall), please press new location in map " + x + " " + y);
                 } else {
                     current.setXY(x, y);
                     current.start();
                 }
-
             }
-
         });
         confirmRoomButton.addActionListener(new ActionListener() {
             @Override

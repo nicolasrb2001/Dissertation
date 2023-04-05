@@ -13,8 +13,10 @@ public class Maps extends Thread{
     protected String start, CurrLoc;
     protected ArrayList<String> route;
 
+
     public Maps(String CurrentLocation, String route, String DesiredRoom) {
         this.destination = DesiredRoom;
+
         this.CurrLoc = "Maps/" + CurrentLocation;
         this.edges = new ArrayList<>();
         this.start = CurrentLocation.substring(0,2);
@@ -40,6 +42,7 @@ public class Maps extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         //open and store route for desired location
 
@@ -115,9 +118,9 @@ public class Maps extends Thread{
 
             String c = next.remove();
             int[] coordinates = unpack(c).clone();
+
             if(inEdge(coordinates[0], coordinates[1])){
                 //found
-                System.out.println("here");
                 String current;
                 String child;
                 current = pack(coordinates);
@@ -131,76 +134,66 @@ public class Maps extends Thread{
                    this.route.add(current);
                }
                 Collections.reverse(this.route);
+               return;
             }else{
                 if(!explored.contains(pack(coordinates))){
                     explored.add(pack(coordinates));
-
-
-                    //System.out.println("explored: " +coordinates[0] + " " + coordinates[1] + "    curr: " + map[coordinates[1]][coordinates[0]]);
                 }else{
                     continue;
                 }
 
                 if(!explored.contains(pack(new int[]{coordinates[0] -1,coordinates[1]}))&& !next.contains(pack(new int[]{coordinates[0] -1,coordinates[1]})) && map[coordinates[1]][coordinates[0]-1] != '#'){
-                    //System.out.println("1" + map[y][x-1]);
+
                     next.add(pack(new int[] {coordinates[0] -1 ,coordinates[1]}));
                     my_dict.put(pack(new int[] {coordinates[0] -1 ,coordinates[1]}), pack(coordinates));
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0] +1,coordinates[1]}))  &&  !next.contains(pack(new int[]{coordinates[0] +1,coordinates[1]})) && map[coordinates[1]][coordinates[0]+1] != '#'){
-                   // System.out.println("2" + map[y][x+1]);
+
                     next.add(pack(new int[] {coordinates[0] +1 ,coordinates[1]}));
                     my_dict.put(pack(new int[] {coordinates[0] +1 ,coordinates[1]}), pack(coordinates));
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0] -1,coordinates[1] -1 })) && !next.contains(pack(new int[]{coordinates[0] -1,coordinates[1] -1 })) && map[coordinates[1]-1][coordinates[0]-1] != '#'){
-                 //   System.out.println("3"+ map[y-1][x-1] + ": "+ y);
+
                     next.add(pack(new int[] {coordinates[0] -1 ,coordinates[1]-1}));
                     my_dict.put(pack(new int[] {coordinates[0] -1 ,coordinates[1]-1}), pack(coordinates ));
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0],coordinates[1]-1})) && !next.contains(pack(new int[]{coordinates[0],coordinates[1]-1})) && map[coordinates[1]-1][coordinates[0]] != '#'){
-                 //   System.out.println("4"+ map[y-1][x] + ": "+ y);
+
                     next.add(pack(new int[] {coordinates[0]  ,coordinates[1]-1}));
                     my_dict.put(pack(new int[] {coordinates[0] ,coordinates[1]-1}), pack(coordinates ));
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0]+1,coordinates[1]-1})) && !next.contains(pack(new int[]{coordinates[0]+1,coordinates[1]-1}))  && map[coordinates[1]-1][coordinates[0]+1] != '#'){
-                  //  System.out.println("5"+ map[y-1][x+1] + ": "+ y);
+
                     next.add(pack(new int[] {coordinates[0] +1 ,coordinates[1]-1}));
                     my_dict.put(pack(new int[] {coordinates[0] +1 ,coordinates[1]-1}), pack(coordinates) );
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0] -1,coordinates[1]+1 })) && !next.contains(pack(new int[]{coordinates[0] -1,coordinates[1]+1 })) && map[coordinates[1]+1][coordinates[0]-1] != '#'){
-                  //  System.out.println("6"+ map[y+1][x-1]);
+
                     next.add(pack(new int[] {coordinates[0] -1 ,coordinates[1]+1}));
                     my_dict.put(pack(new int[] {coordinates[0] -1 ,coordinates[1]+1}), pack(coordinates ));
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0] +1,coordinates[1]+1 })) && !next.contains(pack(new int[]{coordinates[0] +1,coordinates[1]+1 }))  && map[coordinates[1]+1][coordinates[0]+1] != '#'){
-                   // System.out.println("7"+ map[y+1][x+1]);
+
                     next.add(pack(new int[] {coordinates[0] +1 ,coordinates[1]+1}));
                     my_dict.put(pack(new int[] {coordinates[0] +1 ,coordinates[1]+1}), pack(coordinates ));
                 }
                 if(!explored.contains(pack(new int[]{coordinates[0] ,coordinates[1]+1})) && !next.contains(pack(new int[]{coordinates[0] ,coordinates[1]+1})) && map[coordinates[1]+1][coordinates[0]] != '#'){
-                    //System.out.println("8"+ map[y+1][x]);
+
                     next.add(pack(new int[] {coordinates[0] ,coordinates[1]+1}));
                     my_dict.put(pack(new int[] {coordinates[0] ,coordinates[1]+1}), pack(coordinates ));
                 }
             }
         }
-
-
-        System.out.println("not");
-
-
     }
     private boolean inEdge(int x, int y){
         double X1, Y1, X2, Y2;
-       System.out.println("once " + x + "," + y);
+
         for ( String i :  this.edges){
             X1 = Integer.parseInt(i.substring(0,2));
             Y1 = Integer.parseInt(i.substring(3,5));
             X2 = Integer.parseInt(i.substring(6,8));
             Y2 = Integer.parseInt(i.substring(9,11));
-            Line2D line2D = new Line2D.Double(X1,Y1, X2, Y2);
-            //System.out.println("testing : " +X1 + "," + Y1 + "   " + X2 + "," + Y2);
-            if(line2D.contains(x,y)){
-                System.out.println("true");
+            if(Line2D.ptSegDist(X1,Y1, X2, Y2, x, y) == 0){
                 return true;
             }
         }
