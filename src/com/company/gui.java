@@ -1,39 +1,36 @@
 package com.company;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class gui {
 
-    private JComboBox comboBox1;
+    private JComboBox comboBox1, comboBox2;
     private JPanel pan1;
-    private JButton confirmChoiceButton;
     private JPanel maps;
-    private JPanel Library1;
+    private JPanel Library1, Library2, Library3, Library4, Library5;
     private JButton button1;
-    private JPanel Library2;
-    private JPanel Library3;
-    private JPanel Library4;
-    private JPanel Library5;
     private JPanel Theparade;
-    private JLabel library1Label;
-    private JPanel first;
-    private JPanel second;
-    private JComboBox comboBox2;
+    private JPanel first, second, third;
     private JButton confirmRoomButton;
-    private JLabel library2Label;
-    private JLabel library3Label;
-    private JLabel library4Label;
-    private JLabel library5Label;
+    private JLabel library1Label, library2Label, library3Label, library4Label, library5Label;
     private JLabel ParadeLabel;
-    private JPanel third;
     private JButton confirmLocationButton;
+    private JScrollPane scroll;
+    private JPanel imagePanel;
     private int x = 0, y = 0;
-    private Maps current, destination;
+    private Maps current;
+    private BufferedImage bImage;
+    private ArrayList<Maps> destination;
 
 
     public gui() {
@@ -114,6 +111,7 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
+                System.out.println(x / 10 + "," + y / 10);
 
             }
         });
@@ -167,13 +165,14 @@ public class gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.print(x + " " + y + "  ");
-                x = (x - 1) / 10;
-                y = (y - 1) / 10;
+                x = x / 10;
+                y = y / 10;
                 System.out.println(x + " " + y);
                 if (!current.validate(x, y)) {
                     System.out.println("Invalid (wall), please press new location in map " + x + " " + y);
                 } else {
                     current.setXY(x, y);
+                    current.start();
                 }
 
             }
@@ -196,15 +195,36 @@ public class gui {
                 if (sub.equals(current.start)) {
                     //find route on map current else find route on both maps current and destination
                     current.setDestination(choice);
+
+                    imagePanel = new JPanel();
+
+                    imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.PAGE_AXIS));
+                    scroll = new JScrollPane(imagePanel);
+                    Image image = null;
+                    try {
+                        bImage = ImageIO.read(new File(current.CurrLoc));
+                        JLabel label = new JLabel(new ImageIcon(bImage));
+                        imagePanel.add(label);
+                        Graphics2D g2 = bImage.createGraphics();
+                        g2.setColor(Color.red);
+                        BasicStroke stroke = new BasicStroke(30);
+                        g2.setStroke(stroke);
+                        g2.drawLine(10, 10, 100, 100);
+
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    third.add(scroll);
+                    third.repaint();
+
                 } else {
+                    current.setDestination("stairs");
+                    current.start();
+                    destination.add(new Maps(choice, route, choice));
+
 
                 }
 
-
-                switch (sub) {
-                    case
-                }
-                destination = new Maps("stairs", route, choice);
 
             }
         });

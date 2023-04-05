@@ -1,22 +1,25 @@
 package com.company;
 
+import java.awt.geom.Line2D;
 import java.io.*;
 import java.util.*;
 
-public class Maps implements Runnable {
+public class Maps extends Thread{
     private final ArrayList<String> edges;
     private BufferedReader brMap, brRoute;
     private String destination;
     public final char[][] map = new char[50][100];
-    private int x1,y1;
-    public String start;
+    protected int x1,y1;
+    protected String start, CurrLoc;
+    protected ArrayList<String> route;
 
     public Maps(String CurrentLocation, String route, String DesiredRoom) {
         this.destination = DesiredRoom;
+        this.CurrLoc = "Maps/" + CurrentLocation;
         this.edges = new ArrayList<>();
         this.start = CurrentLocation.substring(0,2);
         try {
-            this.brMap = new BufferedReader(new FileReader("Maps/" + CurrentLocation));
+            this.brMap = new BufferedReader(new FileReader(this.CurrLoc));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -33,7 +36,7 @@ public class Maps implements Runnable {
 
         }
         try {
-            brMap.close();
+            this.brMap.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,16 +50,16 @@ public class Maps implements Runnable {
         }
 
         try {
-            String edg = brRoute.readLine();
+            String edg = this.brRoute.readLine();
             while (edg != null){
-                edges.add(edg);
+                this.edges.add(edg);
                 edg = brRoute.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            brRoute.close();
+            this.brRoute.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,100 +77,139 @@ public class Maps implements Runnable {
         this.destination = d;
     }
 
-    private static void Find_Route(){
+    private String pack(int[] xy){
+        if(xy[0] < 10) {
+            if (xy[1] < 10){
+                return "0" + xy[0] + ",0" + xy[1];
 
+            }else{
+                return  "0" + xy[0] + "," + xy[1];
+            }
+        }else{
+            if (xy[1] < 10){
+                return "" + xy[0] + ",0" + xy[1] ;
 
+            }else{
+                return  "" + xy[0] + "," + xy[1] ;
+            }
+        }
+    }
+    private int[] unpack(String xy){
+        int a = Integer.parseInt(xy.substring(0,2));
+        int b =  Integer.parseInt(xy.substring(3,5));
+        return new int[]{a,b};
 
     }
 
 
-    private void breadthFS(int x, int y){
-        ArrayList<int[]> explored = new ArrayList<>();
-        ArrayList<int[]> route = new ArrayList<>();
-        Hashtable<int [], int[]> my_dict = new Hashtable<int[], int[]>();
-        Queue<int[]> next = new LinkedList<>();
-        next.add(new int[] {x,y});
-        
-        my_dict.put(new int[]{x, y}, new int[]{-1, -1});
+
+    protected void breadthFS(int x, int y){
+        ArrayList<String> explored = new ArrayList<>();
+        this.route = new ArrayList<>();
+        Hashtable<String, String> my_dict = new Hashtable<>();
+        my_dict.put(pack(new int[]{x, y}), pack(new int[]{x, y}));
+
+        Queue<String> next = new LinkedList<>();
+        next.add(pack(new int[] {x,y}));
         while(!next.isEmpty()){
-            int[] coordinates = next.remove();
+
+            String c = next.remove();
+            int[] coordinates = unpack(c).clone();
             if(inEdge(coordinates[0], coordinates[1])){
                 //found
-                int[] current = new int[2];
-                current = coordinates;
-                route.add(current);
-
+                System.out.println("here");
+                String current;
+                String child;
+                current = pack(coordinates);
+                this.route.add(current);
                while(true){
-
-                   my_dict.get(current);
-
+                   child = current;
+                   current = my_dict.get(current);
+                   if(child.equals(current)){
+                       break;
+                   }
+                   this.route.add(current);
                }
-
+                Collections.reverse(this.route);
             }else{
-                explored.add(coordinates);
-                if(!explored.contains(new int[] {coordinates[0] -1 ,coordinates[1]}) && map[y][x-1] != '#'){
-                    next.add(new int[] {coordinates[0] -1 ,coordinates[1]});
-                    my_dict.put(new int[] {coordinates[0] -1 ,coordinates[1]}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] +1 ,coordinates[1]}) && map[y][x+1] != '#'){
-                    next.add(new int[] {coordinates[0] +1 ,coordinates[1]});
-                    my_dict.put(new int[] {coordinates[0] +1 ,coordinates[1]}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] -1 ,coordinates[1]-1}) && map[y-1][x-1] != '#'){
-                    next.add(new int[] {coordinates[0] -1 ,coordinates[1]-1});
-                    my_dict.put(new int[] {coordinates[0] -1 ,coordinates[1]-1}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] ,coordinates[1]-1}) && map[y-1][x] != '#'){
-                    next.add(new int[] {coordinates[0]  ,coordinates[1]-1});
-                    my_dict.put(new int[] {coordinates[0] ,coordinates[1]-1}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] +1 ,coordinates[1]-1}) && map[y-1][x+1] != '#'){
-                    next.add(new int[] {coordinates[0] +1 ,coordinates[1]-1});
-                    my_dict.put(new int[] {coordinates[0] +1 ,coordinates[1]-1}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] -1 ,coordinates[1]+1}) && map[y+1][x-1] != '#'){
-                    next.add(new int[] {coordinates[0] -1 ,coordinates[1]+1});
-                    my_dict.put(new int[] {coordinates[0] -1 ,coordinates[1]+1}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] +1 ,coordinates[1]+1}) && map[y+1][x+1] != '#'){
-                    next.add(new int[] {coordinates[0] +1 ,coordinates[1]+1});
-                    my_dict.put(new int[] {coordinates[0] +1 ,coordinates[1]+1}, coordinates );
-                }
-                if(!explored.contains(new int[] {coordinates[0] ,coordinates[1]+1}) && map[y+1][x] != '#'){
-                    next.add(new int[] {coordinates[0] ,coordinates[1]+1});
-                    my_dict.put(new int[] {coordinates[0] ,coordinates[1]+1}, coordinates );
-                }
+                if(!explored.contains(pack(coordinates))){
+                    explored.add(pack(coordinates));
 
 
+                    //System.out.println("explored: " +coordinates[0] + " " + coordinates[1] + "    curr: " + map[coordinates[1]][coordinates[0]]);
+                }else{
+                    continue;
+                }
+
+                if(!explored.contains(pack(new int[]{coordinates[0] -1,coordinates[1]}))&& !next.contains(pack(new int[]{coordinates[0] -1,coordinates[1]})) && map[coordinates[1]][coordinates[0]-1] != '#'){
+                    //System.out.println("1" + map[y][x-1]);
+                    next.add(pack(new int[] {coordinates[0] -1 ,coordinates[1]}));
+                    my_dict.put(pack(new int[] {coordinates[0] -1 ,coordinates[1]}), pack(coordinates));
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0] +1,coordinates[1]}))  &&  !next.contains(pack(new int[]{coordinates[0] +1,coordinates[1]})) && map[coordinates[1]][coordinates[0]+1] != '#'){
+                   // System.out.println("2" + map[y][x+1]);
+                    next.add(pack(new int[] {coordinates[0] +1 ,coordinates[1]}));
+                    my_dict.put(pack(new int[] {coordinates[0] +1 ,coordinates[1]}), pack(coordinates));
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0] -1,coordinates[1] -1 })) && !next.contains(pack(new int[]{coordinates[0] -1,coordinates[1] -1 })) && map[coordinates[1]-1][coordinates[0]-1] != '#'){
+                 //   System.out.println("3"+ map[y-1][x-1] + ": "+ y);
+                    next.add(pack(new int[] {coordinates[0] -1 ,coordinates[1]-1}));
+                    my_dict.put(pack(new int[] {coordinates[0] -1 ,coordinates[1]-1}), pack(coordinates ));
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0],coordinates[1]-1})) && !next.contains(pack(new int[]{coordinates[0],coordinates[1]-1})) && map[coordinates[1]-1][coordinates[0]] != '#'){
+                 //   System.out.println("4"+ map[y-1][x] + ": "+ y);
+                    next.add(pack(new int[] {coordinates[0]  ,coordinates[1]-1}));
+                    my_dict.put(pack(new int[] {coordinates[0] ,coordinates[1]-1}), pack(coordinates ));
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0]+1,coordinates[1]-1})) && !next.contains(pack(new int[]{coordinates[0]+1,coordinates[1]-1}))  && map[coordinates[1]-1][coordinates[0]+1] != '#'){
+                  //  System.out.println("5"+ map[y-1][x+1] + ": "+ y);
+                    next.add(pack(new int[] {coordinates[0] +1 ,coordinates[1]-1}));
+                    my_dict.put(pack(new int[] {coordinates[0] +1 ,coordinates[1]-1}), pack(coordinates) );
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0] -1,coordinates[1]+1 })) && !next.contains(pack(new int[]{coordinates[0] -1,coordinates[1]+1 })) && map[coordinates[1]+1][coordinates[0]-1] != '#'){
+                  //  System.out.println("6"+ map[y+1][x-1]);
+                    next.add(pack(new int[] {coordinates[0] -1 ,coordinates[1]+1}));
+                    my_dict.put(pack(new int[] {coordinates[0] -1 ,coordinates[1]+1}), pack(coordinates ));
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0] +1,coordinates[1]+1 })) && !next.contains(pack(new int[]{coordinates[0] +1,coordinates[1]+1 }))  && map[coordinates[1]+1][coordinates[0]+1] != '#'){
+                   // System.out.println("7"+ map[y+1][x+1]);
+                    next.add(pack(new int[] {coordinates[0] +1 ,coordinates[1]+1}));
+                    my_dict.put(pack(new int[] {coordinates[0] +1 ,coordinates[1]+1}), pack(coordinates ));
+                }
+                if(!explored.contains(pack(new int[]{coordinates[0] ,coordinates[1]+1})) && !next.contains(pack(new int[]{coordinates[0] ,coordinates[1]+1})) && map[coordinates[1]+1][coordinates[0]] != '#'){
+                    //System.out.println("8"+ map[y+1][x]);
+                    next.add(pack(new int[] {coordinates[0] ,coordinates[1]+1}));
+                    my_dict.put(pack(new int[] {coordinates[0] ,coordinates[1]+1}), pack(coordinates ));
+                }
             }
-
         }
 
 
-    }
-    private double distance(int [] coor){
-        return Math.sqrt((coor[0]-coor[1])^2 + (coor[2] - coor[3])^2);
-    }
+        System.out.println("not");
 
+
+    }
     private boolean inEdge(int x, int y){
-        int X1, Y1, X2, Y2;
-        for ( String i :  edges){
+        double X1, Y1, X2, Y2;
+       System.out.println("once " + x + "," + y);
+        for ( String i :  this.edges){
             X1 = Integer.parseInt(i.substring(0,2));
             Y1 = Integer.parseInt(i.substring(3,5));
             X2 = Integer.parseInt(i.substring(6,8));
             Y2 = Integer.parseInt(i.substring(9,11));
-            if (distance(new int[]{X1,x, Y1, y}) + distance(new int[]{X2,x, Y2, y})  == distance(new int[]{X1,X2, Y1, Y2})){
-                // point is in edge
+            Line2D line2D = new Line2D.Double(X1,Y1, X2, Y2);
+            //System.out.println("testing : " +X1 + "," + Y1 + "   " + X2 + "," + Y2);
+            if(line2D.contains(x,y)){
+                System.out.println("true");
                 return true;
             }
         }
         return false;
     }
-
-
-
     @Override
     public void run() {
+        breadthFS(this.x1,this.y1);
+        System.out.println("done");
 
     }
 }

@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowAdapter;
+import java.util.ArrayList;
 
 
 public class Map_Line extends Applet {
@@ -40,12 +41,25 @@ public class Map_Line extends Applet {
         int bh = bi.getHeight(this);
 
         g2.drawImage(bi, null, 0, 0);
-        g2.setColor(Color.white);
+        g2.setColor(Color.red);
         g2.setStroke(new BasicStroke(5.0f));
         g2.drawLine(10, 10, bw-10, bh-10);
     }
 
-    public static void main(String s[]) {
+    public static void main(String[] s) {
+        ArrayList<int[]> jja = new ArrayList<>();
+        int[] current = new int[2];
+        for(int x = 0; x< 5; x++){
+
+        }
+
+
+
+
+
+
+
+
         WindowListener l = new WindowAdapter() {
             public void windowClosing(WindowEvent e) {System.exit(0);}
         };
