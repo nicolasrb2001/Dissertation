@@ -138,6 +138,7 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
+                System.out.println(x / 10 + "," + y / 10);
 
             }
         });
@@ -147,6 +148,7 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
+                System.out.println(x / 10 + "," + y / 10);
 
             }
         });
