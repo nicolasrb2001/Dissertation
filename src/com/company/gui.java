@@ -3,10 +3,7 @@ package com.company;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -121,6 +118,7 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
+                System.out.println(x / 10 + "," + y / 10);
 
             }
         });
@@ -130,6 +128,7 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
+                System.out.println(x / 10 + "," + y / 10);
 
             }
         });
@@ -222,6 +221,20 @@ public class gui {
                 }
 
 
+            }
+        });
+        library2Label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                System.out.println("sw");
+            }
+        });
+        library2Label.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                System.out.println(e.getX() + "," + e.getY());
             }
         });
     }
