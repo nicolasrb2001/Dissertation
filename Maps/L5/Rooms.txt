@@ -1,13 +1,6 @@
-Stairs2: 14,34
-Stairs4: 14,34
-Stairs3: 14,34
-Stairs1: 65,09
-Stairs2: 65,09
-Stairs3: 65,09
-Stairs4: 65,09
-Stairs2: 76,36
-Stairs3: 76,36
-Stairs4: 76,36
+Stairs*: 14,34
+Stairs: 65,09
+Stairs*: 76,36
 Lift: 61,30
 L5.01: 70,43
 L5.02: 63,40
