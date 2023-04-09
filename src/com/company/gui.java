@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,19 +16,22 @@ public class gui {
     private JPanel pan1;
     private JPanel maps;
     private JPanel Library1, Library2, Library3, Library4, Library5;
+    private JPanel oneW1, oneW2, oneW3;
     private JButton button1;
     private JPanel Theparade;
     private JPanel first, second, third;
     private JButton confirmRoomButton;
     private JLabel library1Label, library2Label, library3Label, library4Label, library5Label;
+    private JLabel oneW11, oneW22, oneW33;
     private JLabel ParadeLabel;
     private JButton confirmLocationButton;
     private JScrollPane scroll;
     private JPanel imagePanel;
     private int x = 0, y = 0;
-    private Maps current;
-    private BufferedImage bImage;
-    private ArrayList<Maps> destination;
+    private Maps current, finalmap;
+    private BufferedImage bImage, bImage1, bImage2, bImage3, bImagef;
+    private Maps destination1, destination2, destination3;
+    private String imgPath1, imgPath2, imgPath3, imgPath4, imgPath5;
 
 
     public gui() {
@@ -41,61 +45,113 @@ public class gui {
             public void actionPerformed(ActionEvent e) {
                 String choice = "" + comboBox1.getSelectedItem();
                 String route = "";
+                String start = "";
                 maps.removeAll();
 
                 switch (choice) {
                     case "Library 1" -> {
-                        choice = "L1/Library1.txt";
-                        route = "L1/L1Route.txt";
+                        choice = "Maps/Library/L1/Library1.txt";
+                        route = "Maps/Library/L1/L1Route.txt";
+                        start = "L1";
+                        imgPath1 = "images/Library 1.png";
                         maps.add(Library1);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
                     }
                     case "Library 2" -> {
-                        choice = "L2/Library2.txt";
-                        route = "L2/L2Route.txt";
+                        choice = "Maps/Library/L2/Library2.txt";
+                        route = "Maps/Library/L2/L2Route.txt";
+                        start = "L2";
+                        imgPath1 = "images/Library 2.png";
                         maps.add(Library2);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
                     }
                     case "Library 3" -> {
-                        choice = "L3/Library3.txt";
-                        route = "L3/L3Route.txt";
+                        choice = "Maps/Library/L3/Library3.txt";
+                        route = "Maps/Library/L3/L3Route.txt";
+                        start = "L3";
+                        imgPath1 = "images/Library 3.png";
                         maps.add(Library3);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
                     }
                     case "Library 4" -> {
-                        choice = "L4/Library4.txt";
-                        route = "L4/L4Route.txt";
+                        choice = "Maps/Library/L4/Library4.txt";
+                        route = "Maps/Library/L4/L4Route.txt";
+                        start = "L4";
+                        imgPath1 = "images/Library 4.png";
                         maps.add(Library4);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
                     }
                     case "Library 5" -> {
-                        choice = "L5/Library5.txt";
-                        route = "L5/L5Route.txt";
+                        choice = "Maps/Library/L5/Library5.txt";
+                        route = "Maps/Library/L5/L5Route.txt";
+                        start = "L5";
+                        imgPath2 = "images/Library 5.png";
                         maps.add(Library5);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
                     }
                     case "The Parade" -> {
-                        choice = "TP/TheParade.txt";
-                        route = "TP/TPRoute.txt";
+                        choice = "Maps/TP/TheParade.txt";
+                        route = "Maps/TP/TPRoute.txt";
+                        start = "TP";
+                        imgPath1 = "images/The parade.png";
                         maps.add(Theparade);
                         maps.repaint();
                         maps.revalidate();
                         maps.setVisible(true);
                     }
+                    case "1W.1" -> {
+                        choice = "Maps/1W/1W.1/1W.1.txt";
+                        route = "Maps/1W/1W.1/1W.1Route.txt";
+                        imgPath2 = "images/1W.png";
+                        start = "1W.1";
+                        maps.add(oneW1);
+                        maps.repaint();
+                        maps.revalidate();
+                        maps.setVisible(true);
+
+                    }
+                    case "1W.2" -> {
+                        choice = "Maps/1W/1W.2/1W.2.txt";
+                        route = "Maps/1W/1W.2/1W.2Route.txt";
+                        imgPath1 = "images/1W.png";
+                        start = "1W.2";
+                        maps.add(oneW2);
+                        maps.repaint();
+                        maps.revalidate();
+                        maps.setVisible(true);
+
+                    }
+                    case "1W.3" -> {
+                        choice = "Maps/1W/1W.3/1W.3.txt";
+                        route = "Maps/1W/1W.3/1W.3Route.txt";
+                        start = "1W.3";
+                        imgPath1 = "images/1W.png";
+                        maps.add(oneW3);
+                        maps.repaint();
+                        maps.revalidate();
+                        maps.setVisible(true);
+                    }
+
                     case "" -> System.out.println("no selection");
                 }
                 if (!choice.equals("")) {
                     current = new Maps(choice, route, "");
+                    current.setStart(start);
+                    choice = choice.replace("Maps/", "");
+                    current.setBuilding(choice.substring(0, choice.indexOf("/")));
+                    if(!current.getBuilding().equals("TP")){
+                        current.setFloor(choice.replace(current.getBuilding(), "").substring(0, choice.indexOf("/")));
+                    }
                 }
 
             }
@@ -108,8 +164,6 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-
-
             }
         });
         library2Label.addMouseListener(new MouseAdapter() {
@@ -118,8 +172,6 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-                System.out.println(x / 10 + "," + y / 10);
-
             }
         });
         library3Label.addMouseListener(new MouseAdapter() {
@@ -128,8 +180,6 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-                System.out.println(x / 10 + "," + y / 10);
-
             }
         });
         library4Label.addMouseListener(new MouseAdapter() {
@@ -138,8 +188,6 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-                System.out.println(x / 10 + "," + y / 10);
-
             }
         });
         library5Label.addMouseListener(new MouseAdapter() {
@@ -148,8 +196,6 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-
-
             }
         });
         ParadeLabel.addMouseListener(new MouseAdapter() {
@@ -158,7 +204,6 @@ public class gui {
                 super.mouseClicked(e);
                 x = e.getX();
                 y = e.getY();
-                System.out.println(x / 10 + "," + y / 10);
 
             }
         });
@@ -182,62 +227,231 @@ public class gui {
                 String choice = "" + comboBox2.getSelectedItem();
                 String sub = choice.substring(0, 2);
                 String route = "";
+                String cur = "";
+                String building = "";
+
+
                 switch (sub) {
-                    case "L1" -> route = "L1/L1Route.txt";
-                    case "L2" -> route = "L2/L2Route.txt";
-                    case "L3" -> route = "L3/L3Route.txt";
-                    case "L4" -> route = "L4/L4Route.txt";
-                    case "L5" -> route = "L5/L5Route.txt";
-                    case "TP" -> route = "TP/TPRoute.txt";
+                    case "L1" -> {
+                        route = "Maps/Library/L1/L1Route.txt";
+                        cur = "Maps/Library/L1/Library1.txt";
+                        building = "Library";
+                        imgPath1 = "images/Library 1.png";
+                    }
+                    case "L2" -> {
+                        route = "Maps/Library/L2/L2Route.txt";
+                        cur = "Maps/Library/L2/Library2.txt";
+                        building = "Library";
+                        imgPath1 = "images/Library 2.png";
+                    }
+                    case "L3" -> {
+                        route = "Maps/Library/L3/L3Route.txt";
+                        building = "Library";
+                        cur = "Maps/Library/L3/Library3.txt";
+                        imgPath1 = "images/Library 3.png";
+                    }
+                    case "L4" -> {
+                        route = "Maps/Library/L4/L4Route.txt";
+                        cur = "Maps/Library/L4/Library4.txt";
+                        building = "Library";
+                        imgPath1 = "images/Library 4.png";
+                    }
+                    case "L5" -> {
+                        route = "Maps/Library/L5/L5Route.txt";
+                        cur = "Maps/Library/L5/Library5.txt";
+                        building = "Library";
+                        imgPath1 = "images/Library 5.png";
+                    }
+                    case "1W" -> {
+                        sub = "1W." +choice.charAt(3);
+                        cur = "Maps/1W/1W." +choice.charAt(3) + "/1W." + choice.charAt(3) + ".txt";
+                        route = "Maps/1W/1W." + choice.charAt(3) + "/1W." + choice.charAt(3) + "Route.txt";
+                        imgPath1 = "images/1W.png";
+                        building = "1W";
+                    }
+
                 }
-                if (sub.equals(current.start)) {
+
+
+
+
+                JPanel Imagepanel = new JPanel();
+                JLabel l1 = null,l2,l3,l4,l5;
+                Imagepanel.setLayout(new FlowLayout());
+                Graphics2D g2;
+
+
+                if (sub.equals(current.getFloor())) {
                     //find route on map current else find route on both maps current and destination
                     current.setDestination(choice);
-
-                    imagePanel = new JPanel();
-
-                    imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.PAGE_AXIS));
-                    scroll = new JScrollPane(imagePanel);
-                    Image image = null;
                     try {
-                        bImage = ImageIO.read(new File(current.CurrLoc));
-                        JLabel label = new JLabel(new ImageIcon(bImage));
-                        imagePanel.add(label);
-                        Graphics2D g2 = bImage.createGraphics();
-                        g2.setColor(Color.red);
-                        BasicStroke stroke = new BasicStroke(30);
-                        g2.setStroke(stroke);
-                        g2.drawLine(10, 10, 100, 100);
-
+                        bImage1 = ImageIO.read(new File(imgPath1));
+                        l1 = new JLabel(new ImageIcon(bImage1));
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
+                    g2 = bImage.createGraphics();
+                    try {
+                        current.join();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    //draw method
+
+                    g2.setColor(Color.red);
+                    BasicStroke stroke = new BasicStroke(30);
+                    g2.setStroke(stroke);
+                    g2.drawLine(10, 10, 100, 100);
+
+                    Imagepanel.add(l1);
+                    scroll = new JScrollPane(Imagepanel);
                     third.add(scroll);
                     third.repaint();
+                    maps.removeAll();
+                    maps.setVisible(false);
+
 
                 } else {
-                    current.setDestination("stairs");
-                    current.start();
-                    destination.add(new Maps(choice, route, choice));
+                    finalmap = new Maps(cur, route, choice);
+                    finalmap.setBuilding(building);
+                    finalmap.setST();
+
+                    if (building.equals(current.getBuilding())) {
+                        //SAME BUILDING
+                        current.setDestination("stairs");
+                        current.setST();
+                        try {
+                            current.join();
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        finalmap.findstart(current.getEnd());
+                        finalmap.start();
+
+                        //draw current
+                        //then wait join dest1 and draw dest 1
 
 
+                    } else {
+                        if (current.getBuilding().equals("TheParade")) {
+                            if (!sub.equals("L2") && !sub.equals("1W.1")) {
+                                if (building.equals("Library")) {
+                                    destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "stairs");
+                                }
+                                if (building.equals("1W")) {
+                                    destination1 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "stairs");
+                                }
+                                destination1.findstart("Entrance");
+                                destination1.setST();
+                                destination1.start();
+                                try {
+                                    destination1.join();
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                finalmap.setStart(destination1.getEnd());
+                                finalmap.start();
+                            }
+                        } else {
+                            boolean y = false;
+                            for (String room : current.rooms) {
+                                if (room.contains("Entrance")) {
+                                    y = true;
+                                    break;
+                                }
+                            }
+                            boolean g = false;
+                            for (String room : finalmap.rooms) {
+                                if (room.contains("Entrance")) {
+                                    g = true;
+                                    break;
+                                }
+                            }
+                            if (!y) {
+                                current.setDestination("stairs");
+                                current.setST();
+                                if (current.getBuilding().equals("Library")) {
+                                    destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Exit");
+                                } else {
+                                    if (current.getBuilding().equals("1W")) {
+                                        destination1 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "Exit");
+                                    }
+                                }
+                                try {
+                                    current.join();
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                destination1.setST();
+                                destination1.findstart(current.getEnd());
+                                destination1.start();
+                                destination2 = new Maps("Maps/TP/TheParade.txt.txt", "Maps/TP/TPRoute.txt.txt", building);
+                                destination2.setST();
+                                destination2.findstart(current.getBuilding());
+                                destination2.start();
+
+                                if (!g) {
+                                    if (building.equals("Library")) {
+                                        destination3 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt" , "stairs");
+                                    }
+                                    if(building.equals("1W")){
+                                        destination3 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "stairs");
+                                    }
+                                    destination3.setST();
+                                    destination3.findstart("Entrance");
+                                    destination3.start();
+                                    try {
+                                        destination3.join();
+                                    } catch (InterruptedException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                    finalmap.findstart(destination3.getEnd());
+                                    finalmap.start();
+
+
+                                }else{
+                                    finalmap.findstart("Entrance");
+                                    finalmap.start();
+                                }
+
+
+                            } else {
+                                current.setDestination("Exit");
+                                current.setST();
+                                destination1 = new Maps("Maps/TP/TheParade.txt", "Maps/TP/TPRoute.txt", building);
+                                destination1.setST();
+                                destination1.findstart(current.getBuilding());
+                                destination1.start();
+
+                                if (!g) {
+                                    if (building.equals("Library")) {
+                                        destination2 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "stairs");
+                                    }
+                                    if (building.equals("1W")) {
+                                        destination2 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "stairs");
+                                    }
+                                    destination2.setST();
+                                    destination2.findstart("Entrance");
+                                    destination2.start();
+                                    try {
+                                        destination2.join();
+                                    } catch (InterruptedException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                    finalmap.findstart(destination2.getEnd());
+                                }else{
+                                    finalmap.findstart("Entrance");
+                                    finalmap.start();
+                                }
+
+
+
+                            }
+                        }
+                    }
                 }
-
-
-            }
-        });
-        library2Label.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                super.mouseDragged(e);
-                System.out.println("sw");
-            }
-        });
-        library2Label.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                super.mouseDragged(e);
-                System.out.println(e.getX() + "," + e.getY());
             }
         });
     }
@@ -248,7 +462,7 @@ public class gui {
 
         frame.setContentPane(new gui().pan1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
+        frame.setSize(1000, 1000);
         frame.setVisible(true);
     }
 
@@ -274,6 +488,14 @@ public class gui {
         ParadeLabel = new JLabel();
         ImageIcon p = new ImageIcon(new ImageIcon("images/The parade.png").getImage().getScaledInstance(1000, 500, Image.SCALE_SMOOTH));
         ParadeLabel.setIcon(p);
+        oneW11 = new JLabel();
+        oneW22 = new JLabel();
+        oneW33 = new JLabel();
+        ImageIcon oneW = new ImageIcon(new ImageIcon("images/1W.png").getImage().getScaledInstance(1000, 500, Image.SCALE_SMOOTH));
+        oneW11.setIcon(oneW);
+
+        oneW22.setIcon(oneW);
+        oneW33.setIcon(oneW);
     }
 
 
@@ -342,11 +564,35 @@ public class gui {
         Theparade.add(panel6, "Card1");
         ParadeLabel.setText("");
         panel6.add(ParadeLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        oneW1 = new JPanel();
+        oneW1.setLayout(new CardLayout(0, 0));
+        maps.add(oneW1, "Card7");
+        final JPanel panel7 = new JPanel();
+        panel7.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        oneW1.add(panel7, "Card1");
+        oneW11.setText("");
+        panel7.add(oneW11, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        oneW2 = new JPanel();
+        oneW2.setLayout(new CardLayout(0, 0));
+        maps.add(oneW2, "Card8");
+        final JPanel panel8 = new JPanel();
+        panel8.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        oneW2.add(panel8, "Card1");
+        oneW22.setText("");
+        panel8.add(oneW22, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        oneW3 = new JPanel();
+        oneW3.setLayout(new CardLayout(0, 0));
+        maps.add(oneW3, "Card9");
+        final JPanel panel9 = new JPanel();
+        panel9.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        oneW3.add(panel9, "Card1");
+        oneW33.setText("");
+        panel9.add(oneW33, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         first = new JPanel();
         first.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 5, new Insets(0, 0, 0, 0), -1, -1));
         pan1.add(first, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(10, 10), null, 0, true));
         final JLabel label1 = new JLabel();
-        label1.setText("Label");
+        label1.setText("UNIVERSITY ROUTE PLANNER");
         first.add(label1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 5, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         first.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(1, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -409,7 +655,7 @@ public class gui {
         confirmRoomButton.setText("Confirm room");
         second.add(confirmRoomButton, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         third = new JPanel();
-        third.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        third.setLayout(new CardLayout(0, 0));
         pan1.add(third, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     }
 

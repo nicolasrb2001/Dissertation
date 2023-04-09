@@ -1,6 +1,6 @@
-Stairs*: 14,34
+StairsE: 14,34
 Stairs: 65,09
-Stairs*: 76,36
+StairsW: 76,36
 Lift: 61,30
 L5.01: 70,43
 L5.02: 63,40

@@ -6,22 +6,24 @@ import java.util.*;
 
 public class Maps extends Thread{
     private final ArrayList<String> edges;
-    private BufferedReader brMap, brRoute;
+    private BufferedReader brMap, brRoute, brRooms;
     private String destination;
     public final char[][] map = new char[50][100];
     protected int x1,y1;
-    protected String start, CurrLoc;
+    private String end, building, floor;
+    protected String start, CurrentLocation, routetxt;
     protected ArrayList<String> route;
+    protected ArrayList<String> rooms;
+    private boolean st = false;
 
 
-    public Maps(String CurrentLocation, String route, String DesiredRoom) {
-        this.destination = DesiredRoom;
-
-        this.CurrLoc = "Maps/" + CurrentLocation;
+    public Maps(String c, String r, String d) {
+        this.destination = d;
+        this.CurrentLocation = c;
+        this.routetxt = r;
         this.edges = new ArrayList<>();
-        this.start = CurrentLocation.substring(0,2);
         try {
-            this.brMap = new BufferedReader(new FileReader(this.CurrLoc));
+            this.brMap = new BufferedReader(new FileReader(this.CurrentLocation));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -48,7 +50,7 @@ public class Maps extends Thread{
         //open and store route for desired location
 
         try {
-            this.brRoute = new BufferedReader(new FileReader("Maps/" + route));
+            this.brRoute = new BufferedReader(new FileReader(this.routetxt));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -67,6 +69,22 @@ public class Maps extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            this.brRooms = new BufferedReader(new FileReader( CurrentLocation + "/Rooms.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String room;
+        try {
+            room = this.brRooms.readLine();
+            while(room != null){
+                this.rooms.add(room);
+                room = this.brRooms.readLine();
+            }
+            this.brRooms.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public boolean validate(int x, int y){
 
@@ -79,6 +97,27 @@ public class Maps extends Thread{
     }
     public void setDestination(String d){
         this.destination = d;
+    }
+    public void setStart(String s){
+        this.start = s;
+    }
+    public void setST(){
+        this.st = true;
+    }
+    public void setFloor(String f){
+        this.floor = f;
+    }
+    public String getEnd(){
+        return this.end;
+    }
+    public String getBuilding(){
+        return this.building;
+    }
+    public String getFloor(){
+        return this.floor;
+    }
+    public void setBuilding(String b){
+        this.building = b;
     }
 
     private String pack(int[] xy){
@@ -102,6 +141,36 @@ public class Maps extends Thread{
         int a = Integer.parseInt(xy.substring(0,2));
         int b =  Integer.parseInt(xy.substring(3,5));
         return new int[]{a,b};
+
+    }
+    public void findRoute(){
+        boolean found = false;
+        ArrayList<String> explored = new ArrayList<>();
+        Hashtable<String, String> my_dict = new Hashtable<>();
+        Stack<String> next = new Stack<>();
+        String current = next.push(this.start);
+        while(!found){
+            for(String edg : this.edges){
+                if (edg.contains(current)){
+                    next.push(edg.replace(edg, "").replace(" ", ""));
+
+                }
+            }
+            if(next.equals(this.destination)){
+                found = true;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -186,6 +255,14 @@ public class Maps extends Thread{
             }
         }
     }
+    protected void findstart(String s){
+        for(String i : rooms){
+            if(i.contains(s)){
+                this.setStart(i.replace(s,"").replace(": ", ""));
+                break;
+            }
+        }
+    }
     private boolean inEdge(int x, int y){
         double X1, Y1, X2, Y2;
 
@@ -202,8 +279,22 @@ public class Maps extends Thread{
     }
     @Override
     public void run() {
-        breadthFS(this.x1,this.y1);
-        System.out.println("done");
+        if(!this.st){
+            breadthFS(this.x1,this.y1);
+        }
+
+        while(!this.st){
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        int x,y;
+        x = unpack(this.getEnd())[0];
+        findRoute();
+
+        ;
 
     }
 }
