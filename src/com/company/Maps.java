@@ -120,7 +120,7 @@ public class Maps extends Thread{
         this.building = b;
     }
 
-    private String pack(int[] xy){
+    public String pack(int[] xy){
         if(xy[0] < 10) {
             if (xy[1] < 10){
                 return "0" + xy[0] + ",0" + xy[1];
@@ -137,7 +137,7 @@ public class Maps extends Thread{
             }
         }
     }
-    private int[] unpack(String xy){
+    public static int[] unpack(String xy){
         int a = Integer.parseInt(xy.substring(0,2));
         int b =  Integer.parseInt(xy.substring(3,5));
         return new int[]{a,b};

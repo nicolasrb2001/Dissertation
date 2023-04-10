@@ -296,12 +296,9 @@ public class gui {
                         ex.printStackTrace();
                     }
 
-                    //draw method
+                    //draw method111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
-                    g.setColor(Color.red);
-                    BasicStroke stroke = new BasicStroke(10);
-                    g.setStroke(stroke);
-                    g.drawLine(10, 10, 100, 100);
+
                     l = new JLabel(new ImageIcon(bImage));
 
                     Imagepanel.add(l);
@@ -331,16 +328,8 @@ public class gui {
                         finalmap.start();
 
 
-                        //draw current
+                        //draw current111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
                         //then wait join
-                        try {
-                            finalmap.join();
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        }
-
-
-
 
                         l = new JLabel(new ImageIcon(bImage));
                         Imagepanel.add(l);
@@ -436,7 +425,7 @@ public class gui {
                                 destination2.setST();
                                 destination2.findstart(current.getBuilding());
                                 destination2.start();
-                                //draw g, g1, g2, gf
+                                //draw g, g1, g2, gf 7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
 
                                 g1 = bImage1.createGraphics();
                                 g2 = bImage2.createGraphics();
@@ -481,6 +470,7 @@ public class gui {
                                         ex.printStackTrace();
                                     }
                                     g3 = bImage3.createGraphics();
+                                    //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 
                                     l3 = new JLabel(new ImageIcon(bImage3));
@@ -513,7 +503,7 @@ public class gui {
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
-                                //draw g, g1
+                                //draw g, g1 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
 
                                 l = new JLabel(new ImageIcon(bImage));
                                 l1 = new JLabel(new ImageIcon(bImage1));
@@ -544,6 +534,7 @@ public class gui {
                                     } catch (InterruptedException ex) {
                                         ex.printStackTrace();
                                     }
+                                    //99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
                                     l2 = new JLabel(new ImageIcon(bImage2));
                                     Imagepanel.add(l2);
                                     finalmap.findstart(destination2.getEnd());
@@ -552,18 +543,15 @@ public class gui {
                                 }
                                 finalmap.start();
                             }
-                            try {
-                                finalmap.join();
-                            } catch (InterruptedException ex) {
-                                ex.printStackTrace();
-                            }
-
                         }
-
-                        lf = new JLabel(new ImageIcon(bImagef));
-                        Imagepanel.add(lf);
-
                     }
+                    try {
+                        finalmap.join();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    lf = new JLabel(new ImageIcon(bImagef));
+                    Imagepanel.add(lf);
                 }
 
                 scroll = new JScrollPane(Imagepanel);
@@ -582,7 +570,17 @@ public class gui {
         });
     }
 
+    public void paint(ArrayList<String> a, Graphics2D g ){
+        g.setColor(Color.red);
+        BasicStroke stroke = new BasicStroke(10);
+        g.setStroke(stroke);
+        g.drawLine(10, 10, 100, 100);
 
+
+        for(String i: a){
+            g.drawLine();Maps.unpack(i);
+        }
+    }
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
