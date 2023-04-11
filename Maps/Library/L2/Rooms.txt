@@ -1,6 +1,6 @@
 Lift: 60,32
-Stairs: 65,13
-StairsE: 78,41
-StairsW: 11,38
+S1tairs: 65,13
+SEtairs: 78,41
+SWtairs: 11,38
 Entrance: 92,26
 Exit: 92,16

@@ -1,7 +1,7 @@
-Stairs: 63,10
+S1tairs: 63,10
 Lift: 56,30
-StairsW: 13,32
-StairsE: 70,40
+SWtairs: 13,32
+SEtairs: 70,40
 L4.08: 11,40
 L4.07: 11,43
 L4.06: 13,43

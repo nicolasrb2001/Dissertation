@@ -316,7 +316,7 @@ public class gui {
 
                     if (building.equals(current.getBuilding())) {
                         //SAME BUILDING
-                        current.setDestination("stairs");
+                        current.setDestination("Stairs");
                         current.setST();
                         try {
                             current.join();
@@ -325,6 +325,7 @@ public class gui {
                         }
 
                         finalmap.findstart(current.getEnd());
+
                         finalmap.start();
                         paint(current.route, g);
 
@@ -336,7 +337,8 @@ public class gui {
                         Imagepanel.add(l);
 
                     } else {
-                        if (current.getBuilding().equals("TheParade")) {
+                        if (current.getBuilding().equals("TP")) {
+                            System.out.println("yes");
                             current.setDestination(building);
                             current.setST();
                             try {
@@ -351,11 +353,11 @@ public class gui {
                             Imagepanel.add(l);
                             if (!sub.equals("L2") && !sub.equals("1W.1")) {
                                 if (building.equals("Library")) {
-                                    destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "stairs");
+                                    destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
                                     imgPath1 = "images/Library 2.png";
                                 }
                                 if (building.equals("1W")) {
-                                    destination1 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "stairs");
+                                    destination1 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "Stairs");
                                     imgPath1 = "images/1W.png";
                                 }
                                 destination1.findstart("Entrance");
@@ -399,7 +401,7 @@ public class gui {
                                 }
                             }
                             if (!y) {
-                                current.setDestination("stairs");
+                                current.setDestination("Stairs");
                                 current.setST();
                                 if (current.getBuilding().equals("Library")) {
                                     destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Exit");
@@ -453,11 +455,11 @@ public class gui {
 
                                 if (!ground) {
                                     if (building.equals("Library")) {
-                                        destination3 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "stairs");
+                                        destination3 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
                                         imgPath3 = "images/Library 2.png";
                                     }
                                     if (building.equals("1W")) {
-                                        destination3 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "stairs");
+                                        destination3 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "Stairs");
                                         imgPath3 = "images/1W.png";
                                     }
                                     destination3.setST();
@@ -523,11 +525,11 @@ public class gui {
 
                                 if (!ground) {
                                     if (building.equals("Library")) {
-                                        destination2 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "stairs");
+                                        destination2 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
                                         imgPath2 = "images/Library 2.png";
                                     }
                                     if (building.equals("1W")) {
-                                        destination2 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "stairs");
+                                        destination2 = new Maps("Maps/1W/1W.1/1W.1.txt", "Maps/1W/1W.1/1W.1Route.txt", "Stairs");
                                         imgPath2 = "images/1W.png";
                                     }
                                     destination2.setST();
@@ -585,7 +587,7 @@ public class gui {
 
 
         for (int x = 1; x < a.size(); x++) {
-            g.drawLine(Maps.unpack(a.get(x - 1))[0], Maps.unpack(a.get(x - 1))[1], Maps.unpack(a.get(x))[0], Maps.unpack(a.get(x))[1]);
+            g.drawLine(Maps.unpack(a.get(x - 1))[0] * 10, Maps.unpack(a.get(x - 1))[1] * 10, Maps.unpack(a.get(x))[0] * 10, Maps.unpack(a.get(x))[1] * 10);
         }
 
     }
@@ -780,8 +782,13 @@ public class gui {
         defaultComboBoxModel2.addElement("L4.08");
         defaultComboBoxModel2.addElement("L4.17");
         defaultComboBoxModel2.addElement("L4.18");
-        defaultComboBoxModel2.addElement("L4.3a");
         defaultComboBoxModel2.addElement("L4.30b");
+        defaultComboBoxModel2.addElement("L5.01");
+        defaultComboBoxModel2.addElement("L5.02");
+        defaultComboBoxModel2.addElement("L5.03");
+        defaultComboBoxModel2.addElement("L5.04");
+        defaultComboBoxModel2.addElement("L5.05");
+        defaultComboBoxModel2.addElement("L5.06");
         comboBox2.setModel(defaultComboBoxModel2);
         second.add(comboBox2, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         confirmRoomButton = new JButton();

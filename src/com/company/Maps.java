@@ -13,16 +13,25 @@ public class Maps extends Thread{
     private String end, building, floor;
     protected String start, CurrentLocation, routetxt;
     protected ArrayList<String> route;
+    private ArrayList<String> stairs;
     protected ArrayList<String> rooms;
     private boolean st = false;
+    private boolean first = false;
+    private double X1, Y1, X2, Y2;
+    private String d;
 
 
     public Maps(String c, String r, String d) {
         this.destination = d;
+        this.d = d;
+        this.route = new ArrayList<>();
+
         this.CurrentLocation = c;
         this.routetxt = r;
+        this.stairs = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.edges = new ArrayList<>();
+
         try {
             this.brMap = new BufferedReader(new FileReader(this.CurrentLocation));
         } catch (FileNotFoundException e) {
@@ -144,17 +153,36 @@ public class Maps extends Thread{
         return new int[]{a,b};
 
     }
-    public void findRoute(){
-        System.out.println("finding");
-        boolean found = false;
-        String co = "";
-        for (String room : this.rooms){
-            if(room.contains(this.destination)){
-                this.destination = room.replace(this.destination, "");
-                this.destination = this.destination.replace(": ", "");
-                break;
+    private void findEnd(String i){
+        for(String r : this.rooms){
+            if(r.contains(i)){
+                System.out.println("ends : " + r);
+                this.end = r.replace(i, "").replace(": ", "");
             }
         }
+    }
+    public void findRoute(){
+        boolean found = false;
+        String co = "";
+        if(this.destination.equals("Stairs")){
+            for(String room : this.rooms){
+                if(room.contains("airs")){
+                    this.stairs.add(room.substring(9,14));
+                }
+            }
+        }else{
+            for (String room : this.rooms){
+                if(room.contains(this.destination)){
+
+                    this.end = this.destination;
+                    this.destination = room.replace(this.destination, "");
+                    this.destination = this.destination.replace(": ", "");
+
+                    break;
+                }
+            }
+        }
+
         ArrayList<String> explored = new ArrayList<>();
         Hashtable<String, String> my_dict = new Hashtable<>();
         Stack<String> next = new Stack<>();
@@ -163,29 +191,43 @@ public class Maps extends Thread{
         String child;
         String result;
         System.out.println("start: "+ this.start);
+
         while(!found){
+            if(first){
+                next.pop();
+                first = false;
+                next.push(pack(new int[]{( int)this.X1,(int) this.Y1}));
+                next.push(pack(new int[]{( int)this.X2,(int) this.Y2}));
+                my_dict.put(pack(new int[]{( int)this.X1,(int) this.Y1}), this.start);
+                my_dict.put(pack(new int[]{( int)this.X2,(int) this.Y2}), this.start);
+                continue;
+            }
             current = next.pop();
             for(String edg : this.edges){
-                if (inEdge(unpack(current)[0], unpack(current)[1])) {
-                    //add both sides to next and put in dict, create boolean so this if is not checked again :)
-                }
                 if (edg.contains(current)){
                     result = edg.replace(current, "");
                     result = result.replace(" ", "");
                     if (!explored.contains(result) && !my_dict.containsKey(result)){
                         next.push(result);
                         my_dict.put(result, current);
-                        if(result.equals(this.destination)){
-                            this.end = result;
+                        if(result.equals(this.destination) ||  this.stairs.contains(result)  ){
+                            if(this.stairs.contains(result)){
+                                findEnd(result);
+                            }
+
+
+
+
                             found = true;
                             explored.clear();
                             explored.add(result);
                             while(true){
                                 child = my_dict.get(result);
-                                explored.add(child);
                                 if(child.equals(this.start)){
                                     break;
                                 }
+                                explored.add(child);
+
                                 result = child;
                             }
                             Collections.reverse(explored);
@@ -207,7 +249,7 @@ public class Maps extends Thread{
 
     protected void breadthFS(int x, int y){
         ArrayList<String> explored = new ArrayList<>();
-        this.route = new ArrayList<>();
+
         Hashtable<String, String> my_dict = new Hashtable<>();
         my_dict.put(pack(new int[]{x, y}), pack(new int[]{x, y}));
 
@@ -294,14 +336,15 @@ public class Maps extends Thread{
         }
     }
     private boolean inEdge(int x, int y){
-        double X1, Y1, X2, Y2;
+
 
         for ( String i :  this.edges){
-            X1 = Integer.parseInt(i.substring(0,2));
-            Y1 = Integer.parseInt(i.substring(3,5));
-            X2 = Integer.parseInt(i.substring(6,8));
-            Y2 = Integer.parseInt(i.substring(9,11));
+            this.X1 = Integer.parseInt(i.substring(0,2));
+            this.Y1 = Integer.parseInt(i.substring(3,5));
+            this.X2 = Integer.parseInt(i.substring(6,8));
+            this.Y2 = Integer.parseInt(i.substring(9,11));
             if(Line2D.ptSegDist(X1,Y1, X2, Y2, x, y) == 0){
+
                 return true;
             }
         }
@@ -311,7 +354,12 @@ public class Maps extends Thread{
     public void run() {
         if(!this.st){
             breadthFS(this.x1,this.y1);
-            System.out.println("here");
+            System.out.println("route start is: ");
+            for(String i : this.route){
+                System.out.println(i);
+            }
+
+            this.first = true;
         }
 
         while(!this.st){
