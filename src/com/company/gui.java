@@ -297,7 +297,7 @@ public class gui {
                     }
 
                     //draw method111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-
+                    paint(current.route, g);
 
                     l = new JLabel(new ImageIcon(bImage));
 
@@ -326,6 +326,7 @@ public class gui {
 
                         finalmap.findstart(current.getEnd());
                         finalmap.start();
+                        paint(current.route, g);
 
 
                         //draw current111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
@@ -345,6 +346,7 @@ public class gui {
                             }
                             g = bImage.createGraphics();
                             //draw label current
+                            paint(current.route, g);
                             l = new JLabel(new ImageIcon(bImage));
                             Imagepanel.add(l);
                             if (!sub.equals("L2") && !sub.equals("1W.1")) {
@@ -370,7 +372,9 @@ public class gui {
                                     ex.printStackTrace();
                                 }
                                 //draw l1
+
                                 g1 = bImage1.createGraphics();
+                                paint(destination1.route, g1);
                                 l1 = new JLabel(new ImageIcon(bImage1));
                                 Imagepanel.add(l1);
                                 finalmap.findstart(destination1.getEnd());
@@ -429,12 +433,16 @@ public class gui {
 
                                 g1 = bImage1.createGraphics();
                                 g2 = bImage2.createGraphics();
+                                paint(current.route, g);
+
                                 try {
                                     destination1.join();
                                     destination2.join();
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
+                                paint(destination1.route, g1);
+                                paint(destination2.route, g2);
 
                                 l1 = new JLabel(new ImageIcon(bImage1));
                                 l2 = new JLabel(new ImageIcon(bImage2));
@@ -461,6 +469,8 @@ public class gui {
                                         ex.printStackTrace();
                                     }
 
+
+
                                     finalmap.findstart(destination3.getEnd());
                                     finalmap.start();
 
@@ -472,7 +482,7 @@ public class gui {
                                     g3 = bImage3.createGraphics();
                                     //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
-
+                                    paint(destination3.route, g3);
                                     l3 = new JLabel(new ImageIcon(bImage3));
                                     Imagepanel.add(l3);
 
@@ -504,7 +514,8 @@ public class gui {
                                     ex.printStackTrace();
                                 }
                                 //draw g, g1 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
-
+                                paint(destination1.route, g1);
+                                paint(current.route, g);
                                 l = new JLabel(new ImageIcon(bImage));
                                 l1 = new JLabel(new ImageIcon(bImage1));
                                 Imagepanel.add(l);
@@ -535,6 +546,7 @@ public class gui {
                                         ex.printStackTrace();
                                     }
                                     //99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+                                    paint(destination2.route, g2);
                                     l2 = new JLabel(new ImageIcon(bImage2));
                                     Imagepanel.add(l2);
                                     finalmap.findstart(destination2.getEnd());
@@ -550,6 +562,7 @@ public class gui {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
+                    paint(finalmap.route, gf);
                     lf = new JLabel(new ImageIcon(bImagef));
                     Imagepanel.add(lf);
                 }
@@ -574,12 +587,12 @@ public class gui {
         g.setColor(Color.red);
         BasicStroke stroke = new BasicStroke(10);
         g.setStroke(stroke);
-        g.drawLine(10, 10, 100, 100);
 
 
-        for(String i: a){
-            g.drawLine();Maps.unpack(i);
+        for(int x = 1; x<a.size(); x++){
+            g.drawLine(Maps.unpack(a.get(x-1))[0], Maps.unpack(a.get(x-1))[1], Maps.unpack(a.get(x))[0], Maps.unpack(a.get(x))[1]);
         }
+
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame();

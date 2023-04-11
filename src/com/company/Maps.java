@@ -145,21 +145,53 @@ public class Maps extends Thread{
     }
     public void findRoute(){
         boolean found = false;
+        String co = "";
+        for (String room : this.rooms){
+            if(room.contains(this.destination)){
+                this.destination = room.replace(room, "").replace(": ", "");
+                break;
+            }
+        }
         ArrayList<String> explored = new ArrayList<>();
         Hashtable<String, String> my_dict = new Hashtable<>();
         Stack<String> next = new Stack<>();
-        String current = next.push(this.start);
+        next.push(this.start);
+        String current;
+        String child;
         while(!found){
+            current = next.pop();
             for(String edg : this.edges){
                 if (edg.contains(current)){
-                    next.push(edg.replace(edg, "").replace(" ", ""));
+                    String result = edg.replace(current, "").replace(" ", "");
+                    if (!explored.contains(result) && !my_dict.containsKey(result)){
+                        next.push(result);
+                        my_dict.put(result, current);
+                        if(result.equals(this.destination)){
+                            found = true;
+                            explored.clear();
+                            explored.add(result);
+                            while(true){
+                                child = my_dict.get(result);
+                                explored.add(child);
+                                if(child.equals(this.start)){
+                                    break;
+                                }
+                                result = child;
+                            }
+                            Collections.reverse(explored);
+                            this.route.addAll(explored);
 
+
+
+                            return;
+                        }
+
+                    }
                 }
             }
-            if(next.equals(this.destination)){
-                found = true;
-            }
+            explored.add(current);
         }
+        this.end = "";
 
 
 
