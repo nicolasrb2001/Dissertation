@@ -21,6 +21,7 @@ public class Maps extends Thread{
         this.destination = d;
         this.CurrentLocation = c;
         this.routetxt = r;
+        this.rooms = new ArrayList<>();
         this.edges = new ArrayList<>();
         try {
             this.brMap = new BufferedReader(new FileReader(this.CurrentLocation));
@@ -70,7 +71,7 @@ public class Maps extends Thread{
             e.printStackTrace();
         }
         try {
-            this.brRooms = new BufferedReader(new FileReader( CurrentLocation + "/Rooms.txt"));
+            this.brRooms = new BufferedReader(new FileReader( CurrentLocation.substring(0, CurrentLocation.lastIndexOf("/")) + "/Rooms.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -144,11 +145,13 @@ public class Maps extends Thread{
 
     }
     public void findRoute(){
+        System.out.println("finding");
         boolean found = false;
         String co = "";
         for (String room : this.rooms){
             if(room.contains(this.destination)){
-                this.destination = room.replace(room, "").replace(": ", "");
+                this.destination = room.replace(this.destination, "");
+                this.destination = this.destination.replace(": ", "");
                 break;
             }
         }
@@ -158,15 +161,22 @@ public class Maps extends Thread{
         next.push(this.start);
         String current;
         String child;
+        String result;
+        System.out.println("start: "+ this.start);
         while(!found){
             current = next.pop();
             for(String edg : this.edges){
+                if (inEdge(unpack(current)[0], unpack(current)[1])) {
+                    //add both sides to next and put in dict, create boolean so this if is not checked again :)
+                }
                 if (edg.contains(current)){
-                    String result = edg.replace(current, "").replace(" ", "");
+                    result = edg.replace(current, "");
+                    result = result.replace(" ", "");
                     if (!explored.contains(result) && !my_dict.containsKey(result)){
                         next.push(result);
                         my_dict.put(result, current);
                         if(result.equals(this.destination)){
+                            this.end = result;
                             found = true;
                             explored.clear();
                             explored.add(result);
@@ -180,7 +190,7 @@ public class Maps extends Thread{
                             }
                             Collections.reverse(explored);
                             this.route.addAll(explored);
-
+                            System.out.println("found");
 
 
                             return;
@@ -191,19 +201,6 @@ public class Maps extends Thread{
             }
             explored.add(current);
         }
-        this.end = "";
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -223,6 +220,7 @@ public class Maps extends Thread{
 
             if(inEdge(coordinates[0], coordinates[1])){
                 //found
+                this.start = pack(coordinates);
                 String current;
                 String child;
                 current = pack(coordinates);
@@ -288,7 +286,7 @@ public class Maps extends Thread{
         }
     }
     protected void findstart(String s){
-        for(String i : rooms){
+        for(String i : this.rooms){
             if(i.contains(s)){
                 this.setStart(i.replace(s,"").replace(": ", ""));
                 break;
@@ -313,20 +311,22 @@ public class Maps extends Thread{
     public void run() {
         if(!this.st){
             breadthFS(this.x1,this.y1);
+            System.out.println("here");
         }
 
         while(!this.st){
             try {
+
                 sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        int x,y;
-        x = unpack(this.getEnd())[0];
         findRoute();
-
-        ;
+        System.out.println("route final is: ");
+        for(String i : this.route){
+            System.out.println(i);
+        }
 
     }
 }
