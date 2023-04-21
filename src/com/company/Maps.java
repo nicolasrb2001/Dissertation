@@ -164,6 +164,7 @@ public class Maps extends Thread{
     public void findRoute(){
         boolean found = false;
         String co = "";
+
         if(this.destination.equals("Stairs")){
             for(String room : this.rooms){
                 if(room.contains("airs")){
@@ -181,7 +182,9 @@ public class Maps extends Thread{
                     break;
                 }
             }
+
         }
+
 
         ArrayList<String> explored = new ArrayList<>();
         Hashtable<String, String> my_dict = new Hashtable<>();

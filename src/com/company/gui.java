@@ -305,6 +305,7 @@ public class gui {
                 } else {
                     finalmap = new Maps(cur, route, choice);
                     finalmap.setBuilding(building);
+                    finalmap.setFloor(sub);
                     finalmap.setST();
                     try {
                         bImagef = ImageIO.read(new File(imgPathf));
@@ -353,7 +354,12 @@ public class gui {
                             Imagepanel.add(l);
                             if (!sub.equals("L2") && !sub.equals("1W.1")) {
                                 if (building.equals("Library")) {
-                                    destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
+                                    if (finalmap.getFloor().equals("L1")) {
+                                        destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "S1tairs");
+                                    } else {
+                                        destination1 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
+                                    }
+
                                     imgPath1 = "images/Library 2.png";
                                 }
                                 if (building.equals("1W")) {
@@ -455,7 +461,12 @@ public class gui {
 
                                 if (!ground) {
                                     if (building.equals("Library")) {
-                                        destination3 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
+                                        if (finalmap.getFloor().equals("L1")) {
+                                            destination3 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "S1tairs");
+                                        } else {
+                                            destination3 = new Maps("Maps/Library/L2/Library2.txt", "Maps/Library/L2/L2Route.txt", "Stairs");
+                                        }
+
                                         imgPath3 = "images/Library 2.png";
                                     }
                                     if (building.equals("1W")) {
