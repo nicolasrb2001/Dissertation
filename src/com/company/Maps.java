@@ -347,11 +347,6 @@ public class Maps extends Thread{
     public void run() {
         if(!this.st){
             breadthFS(this.x1,this.y1);
-            System.out.println("route start is: ");
-            for(String i : this.route){
-                System.out.println(i);
-            }
-
             this.first = true;
         }
 
@@ -364,10 +359,7 @@ public class Maps extends Thread{
             }
         }
         findRoute();
-        System.out.println("route final is: ");
-        for(String i : this.route){
-            System.out.println(i);
-        }
+
 
     }
 }

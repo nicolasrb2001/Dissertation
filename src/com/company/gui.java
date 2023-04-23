@@ -26,7 +26,6 @@ public class gui {
     private JButton confirmLocationButton;
     private JRadioButton DISABLEDRadioButton;
     private JScrollPane scroll;
-    private JPanel imagePanel;
     private int x = 0, y = 0;
     private Maps current, finalmap;
     private BufferedImage bImage, bImage1, bImage2, bImage3, bImagef;
@@ -39,127 +38,122 @@ public class gui {
 
 
         $$$setupUI$$$();
-        button1.addActionListener(new ActionListener() {
+        button1.addActionListener(e -> {
+            String choice = "" + comboBox1.getSelectedItem();
+            String route = "";
+            String start = "";
+            maps.removeAll();
 
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String choice = "" + comboBox1.getSelectedItem();
-                String route = "";
-                String start = "";
-                maps.removeAll();
-
-                switch (choice) {
-                    case "Library 1" -> {
-                        choice = "Maps/Library/L1/Library1.txt";
-                        route = "Maps/Library/L1/L1Route.txt";
-                        start = "L1";
-                        imgPath = "images/Library 1.png";
-                        maps.add(Library1);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-                    case "Library 2" -> {
-                        choice = "Maps/Library/L2/Library2.txt";
-                        route = "Maps/Library/L2/L2Route.txt";
-                        start = "L2";
-                        imgPath = "images/Library 2.png";
-                        maps.add(Library2);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-                    case "Library 3" -> {
-                        choice = "Maps/Library/L3/Library3.txt";
-                        route = "Maps/Library/L3/L3Route.txt";
-                        start = "L3";
-                        imgPath = "images/Library 3.png";
-                        maps.add(Library3);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-                    case "Library 4" -> {
-                        choice = "Maps/Library/L4/Library4.txt";
-                        route = "Maps/Library/L4/L4Route.txt";
-                        start = "L4";
-                        imgPath = "images/Library 4.png";
-                        maps.add(Library4);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-                    case "Library 5" -> {
-                        choice = "Maps/Library/L5/Library5.txt";
-                        route = "Maps/Library/L5/L5Route.txt";
-                        start = "L5";
-                        imgPath = "images/Library 5.png";
-                        maps.add(Library5);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-                    case "The Parade" -> {
-                        choice = "Maps/TP/TP/TheParade.txt";
-                        route = "Maps/TP/TP/TPRoute.txt";
-                        start = "TP";
-                        imgPath = "images/The parade.png";
-                        maps.add(Theparade);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-                    case "1W.1" -> {
-                        choice = "Maps/1W/1W.1/1W.1.txt";
-                        route = "Maps/1W/1W.1/1W.1Route.txt";
-                        imgPath = "images/1W.png";
-                        start = "1W.1";
-                        maps.add(oneW1);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-
-                    }
-                    case "1W.2" -> {
-                        choice = "Maps/1W/1W.2/1W.2.txt";
-                        route = "Maps/1W/1W.2/1W.2Route.txt";
-                        imgPath = "images/1W.png";
-                        start = "1W.2";
-                        maps.add(oneW2);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-
-                    }
-                    case "1W.3" -> {
-                        choice = "Maps/1W/1W.3/1W.3.txt";
-                        route = "Maps/1W/1W.3/1W.3Route.txt";
-                        start = "1W.3";
-                        imgPath = "images/1W.png";
-                        maps.add(oneW3);
-                        maps.repaint();
-                        maps.revalidate();
-                        maps.setVisible(true);
-                    }
-
-                    case "" -> System.out.println("no selection");
+            switch (choice) {
+                case "Library 1" -> {
+                    choice = "Maps/Library/L1/Library1.txt";
+                    route = "Maps/Library/L1/L1Route.txt";
+                    start = "L1";
+                    imgPath = "images/Library 1.png";
+                    maps.add(Library1);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
                 }
-                if (!choice.equals("")) {
-                    current = new Maps(choice, route, "");
-                    choice = choice.replace("Maps/", "");
-                    current.setBuilding(choice.substring(0, choice.indexOf("/")));
-                    if (!current.getBuilding().equals("TP")) {
-                        current.setFloor(start);
-                    }
-                    try {
-                        bImage = ImageIO.read((new File(imgPath)));
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                case "Library 2" -> {
+                    choice = "Maps/Library/L2/Library2.txt";
+                    route = "Maps/Library/L2/L2Route.txt";
+                    start = "L2";
+                    imgPath = "images/Library 2.png";
+                    maps.add(Library2);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+                }
+                case "Library 3" -> {
+                    choice = "Maps/Library/L3/Library3.txt";
+                    route = "Maps/Library/L3/L3Route.txt";
+                    start = "L3";
+                    imgPath = "images/Library 3.png";
+                    maps.add(Library3);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+                }
+                case "Library 4" -> {
+                    choice = "Maps/Library/L4/Library4.txt";
+                    route = "Maps/Library/L4/L4Route.txt";
+                    start = "L4";
+                    imgPath = "images/Library 4.png";
+                    maps.add(Library4);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+                }
+                case "Library 5" -> {
+                    choice = "Maps/Library/L5/Library5.txt";
+                    route = "Maps/Library/L5/L5Route.txt";
+                    start = "L5";
+                    imgPath = "images/Library 5.png";
+                    maps.add(Library5);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+                }
+                case "The Parade" -> {
+                    choice = "Maps/TP/TP/TheParade.txt";
+                    route = "Maps/TP/TP/TPRoute.txt";
+                    start = "TP";
+                    imgPath = "images/The parade.png";
+                    maps.add(Theparade);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+                }
+                case "1W.1" -> {
+                    choice = "Maps/1W/1W.1/1W.1.txt";
+                    route = "Maps/1W/1W.1/1W.1Route.txt";
+                    imgPath = "images/1W.png";
+                    start = "1W.1";
+                    maps.add(oneW1);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+
+                }
+                case "1W.2" -> {
+                    choice = "Maps/1W/1W.2/1W.2.txt";
+                    route = "Maps/1W/1W.2/1W.2Route.txt";
+                    imgPath = "images/1W.png";
+                    start = "1W.2";
+                    maps.add(oneW2);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
+
+                }
+                case "1W.3" -> {
+                    choice = "Maps/1W/1W.3/1W.3.txt";
+                    route = "Maps/1W/1W.3/1W.3Route.txt";
+                    start = "1W.3";
+                    imgPath = "images/1W.png";
+                    maps.add(oneW3);
+                    maps.repaint();
+                    maps.revalidate();
+                    maps.setVisible(true);
                 }
 
+                case "" -> System.out.println("no selection");
             }
+            if (!choice.equals("")) {
+                current = new Maps(choice, route, "");
+                choice = choice.replace("Maps/", "");
+                current.setBuilding(choice.substring(0, choice.indexOf("/")));
+                if (!current.getBuilding().equals("TP")) {
+                    current.setFloor(start);
+                }
+                try {
+                    bImage = ImageIO.read((new File(imgPath)));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
         });
 
         maps.setVisible(false);
@@ -325,14 +319,14 @@ public class gui {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                    System.out.println("done" + current.getEnd());
+
                     finalmap.findstart(current.getEnd());
 
                     finalmap.start();
                     paint(current.route, g);
 
 
-                    //draw current111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                    //draw current
                     //then wait join
 
                     l = new JLabel(new ImageIcon(bImage));
@@ -340,7 +334,7 @@ public class gui {
 
                 } else {
                     if (current.getBuilding().equals("TP")) {
-                        System.out.println("yes");
+
                         current.setDestination(building);
                         current.setST();
                         try {
@@ -446,8 +440,7 @@ public class gui {
                             destination2.setST();
                             destination2.findstart(current.getBuilding());
                             destination2.start();
-                            //draw g, g1, g2, gf 7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-
+                            //draw g, g1, g2, gf
                             g1 = bImage1.createGraphics();
                             g2 = bImage2.createGraphics();
                             paint(current.route, g);
@@ -504,7 +497,6 @@ public class gui {
                                     ex.printStackTrace();
                                 }
                                 g3 = bImage3.createGraphics();
-                                //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
                                 paint(destination3.route, g3);
                                 l3 = new JLabel(new ImageIcon(bImage3));
@@ -537,7 +529,6 @@ public class gui {
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
                             }
-                            //draw g, g1 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
                             paint(destination1.route, g1);
                             paint(current.route, g);
                             l = new JLabel(new ImageIcon(bImage));
@@ -574,7 +565,6 @@ public class gui {
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
-                                //99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
                                 paint(destination2.route, g2);
                                 l2 = new JLabel(new ImageIcon(bImage2));
                                 Imagepanel.add(l2);
@@ -613,7 +603,7 @@ public class gui {
 
     public void paint(ArrayList<String> a, Graphics2D g) {
         g.setColor(Color.red);
-        BasicStroke stroke = new BasicStroke(10);
+        BasicStroke stroke = new BasicStroke(3);
         g.setStroke(stroke);
 
 
