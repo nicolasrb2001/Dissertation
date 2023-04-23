@@ -156,24 +156,23 @@ public class Maps extends Thread{
     private void findEnd(String i){
         for(String r : this.rooms){
             if(r.contains(i)){
-                System.out.println("ends : " + r);
                 this.end = r.replace(i, "").replace(": ", "");
             }
         }
     }
     public void findRoute(){
-        boolean found = false;
-        String co = "";
-
         if(this.destination.equals("Stairs")){
+
             for(String room : this.rooms){
                 if(room.contains("airs")){
                     this.stairs.add(room.substring(9,14));
+
                 }
             }
         }else{
             for (String room : this.rooms){
                 if(room.contains(this.destination)){
+
 
                     this.end = this.destination;
                     this.destination = room.replace(this.destination, "");
@@ -193,9 +192,7 @@ public class Maps extends Thread{
         String current;
         String child;
         String result;
-        System.out.println("start: "+ this.start);
-
-        while(!found){
+        while(true){
             if(first){
                 next.pop();
                 first = false;
@@ -217,16 +214,12 @@ public class Maps extends Thread{
                             if(this.stairs.contains(result)){
                                 findEnd(result);
                             }
-
-
-
-
-                            found = true;
                             explored.clear();
                             explored.add(result);
                             while(true){
                                 child = my_dict.get(result);
                                 if(child.equals(this.start)){
+                                    explored.add(child);
                                     break;
                                 }
                                 explored.add(child);
@@ -235,9 +228,6 @@ public class Maps extends Thread{
                             }
                             Collections.reverse(explored);
                             this.route.addAll(explored);
-                            System.out.println("found");
-
-
                             return;
                         }
 
