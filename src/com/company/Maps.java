@@ -170,10 +170,9 @@ public class Maps extends Thread{
                 }
             }
         }else{
+            System.out.println("dest: " +this.destination);
             for (String room : this.rooms){
-                if(room.contains(this.destination)){
-
-
+                if(this.destination.equals(room.substring(0, room.indexOf(":")))){
                     this.end = this.destination;
                     this.destination = room.replace(this.destination, "");
                     this.destination = this.destination.replace(": ", "");
@@ -181,8 +180,8 @@ public class Maps extends Thread{
                     break;
                 }
             }
-
         }
+        System.out.println("Start: "+ this.start + " end: "+ this.destination);
 
 
         ArrayList<String> explored = new ArrayList<>();
@@ -195,6 +194,13 @@ public class Maps extends Thread{
         while(true){
             if(first){
                 next.pop();
+                if(this.start.equals(this.destination) ||  this.stairs.contains(this.start)){
+                    if(this.stairs.contains(this.start)){
+                        findEnd(this.start);
+                    }
+                    return;
+                }
+                System.out.println("yes");
                 first = false;
                 next.push(pack(new int[]{( int)this.X1,(int) this.Y1}));
                 next.push(pack(new int[]{( int)this.X2,(int) this.Y2}));
