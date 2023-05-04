@@ -200,7 +200,7 @@ public class Maps extends Thread{
                     }
                     return;
                 }
-                System.out.println("yes");
+
                 first = false;
                 next.push(pack(new int[]{( int)this.X1,(int) this.Y1}));
                 next.push(pack(new int[]{( int)this.X2,(int) this.Y2}));
